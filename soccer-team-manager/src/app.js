@@ -2,6 +2,7 @@ const express = require('express');
 const getFile = require('./utils/readData');
 const postFile = require('./utils/writeData');
 const updateData = require('./utils/updateData');
+const deleteData = require('./utils/deleteData');
 
 const app = express();
 app.use(express.json());
@@ -30,5 +31,13 @@ app.put('/soccer/:id', async (req, res) => {
   const updateSoccer = await updateData(Number(id), updateSoccerData);
   
   return res.status(201).json({ updateSoccer });
+});
+
+app.delete('/soccer/:id', async (req, res) => {
+  const { id } = req.params; 
+
+  await deleteData(Number(id));
+
+  return (res.status(204).end());
 });
 module.exports = app;
