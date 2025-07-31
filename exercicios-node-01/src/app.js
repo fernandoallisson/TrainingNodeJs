@@ -33,4 +33,10 @@ app.put('/movies/:id', async (req, res) => {
   return res.status(200).json(updatedMovie);
 });
 
+app.delete('/movies/:id', async (req, res) => {
+  const { id } = req.params;
+  await ultils.deleMovie(id);
+  res.status(200).json({ message: `Movie with id ${id} was deleted.` });
+});
+
 module.exports = app;

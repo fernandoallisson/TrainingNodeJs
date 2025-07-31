@@ -56,9 +56,21 @@ async function updateMovie(id, newMovie) {
   }
 }
 
+async function deleMovie(id) {
+  try {
+    const oldListMovies = await readData();
+    const filteredMovie = oldListMovies.filter((movie) => movie.id !== Number(id));
+
+    await fs.promises.writeFile(PATH_DATA_MOVIES, JSON.stringify(filteredMovie));
+  } catch (error) {
+    console.error(`Do not possible to delete the Movie. Error ${error}`);
+  }
+}
+
 module.exports = {
   readData,
   getMoviesById,
   postMovie,
   updateMovie,
+  deleMovie,
 };
