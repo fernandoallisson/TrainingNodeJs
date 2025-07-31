@@ -41,8 +41,24 @@ async function postMovie(newMovie) {
   }
 }
 
+async function updateMovie(id, newMovie) {
+  const oldMovieList = await readData();
+  try {
+      const updatedMovie = oldMovieList.map((movie) => (movie.id === id
+    ? { ...movie, ...newMovie }
+    : movie));
+
+    await fs.promises.writeFile(PATH_DATA_MOVIES, JSON.stringify(updatedMovie));
+
+    return updatedMovie.find((movie) => movie.id === Number(id));
+  } catch (error) {
+    console.error(`Did Not Update the Movie with id: ${id}. Error: ${error}`);
+  }
+}
+
 module.exports = {
   readData,
   getMoviesById,
   postMovie,
+  updateMovie,
 };

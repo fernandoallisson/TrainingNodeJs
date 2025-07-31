@@ -25,4 +25,12 @@ app.post('/movies', async (req, res) => {
   return res.status(201).json(movie);
 });
 
+app.put('/movies/:id', async (req, res) => {
+  const { id } = req.params;
+  const newMovie = req.body;
+
+  const updatedMovie = await ultils.updateMovie(Number(id), newMovie);
+  return res.status(200).json(updatedMovie);
+});
+
 module.exports = app;
