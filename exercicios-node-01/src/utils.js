@@ -13,6 +13,20 @@ async function readData() {
   }
 }
 
+async function getMoviesById(id) {
+  try {
+    const data = await readData();
+    const movieFiltered = data.filter((movie) => movie.id === Number(id));
+
+    if (movieFiltered.lenght < 1) { return { Message: 'Do not have movies here' }; }
+
+    return movieFiltered; // Não vai 'parsear', por que já é um Array de Objetos. 
+  } catch (error) {
+    console.error(`Did not read the files. Error: ${error}`);
+  }
+}
+
 module.exports = {
   readData,
+  getMoviesById,
 };

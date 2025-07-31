@@ -25,7 +25,6 @@ app.post('/soccer', async (req, res) => {
 
 app.put('/soccer/:id', async (req, res) => {
   const { id } = req.params;
-  console.log(id);
   const updateSoccerData = req.body;
 
   const updateSoccer = await updateData(Number(id), updateSoccerData);
