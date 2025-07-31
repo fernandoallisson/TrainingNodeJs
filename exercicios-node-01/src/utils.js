@@ -14,10 +14,10 @@ async function readData() {
 }
 
 async function getMoviesById(id) {
-  try {
-    const data = await readData();
-    const movieFiltered = data.filter((movie) => movie.id === Number(id));
+  const data = await readData();
 
+  try {
+    const movieFiltered = data.filter((movie) => movie.id === Number(id));
     if (movieFiltered.lenght < 1) { return { Message: 'Do not have movies here' }; }
 
     return movieFiltered; // Não vai 'parsear', por que já é um Array de Objetos. 
@@ -26,7 +26,23 @@ async function getMoviesById(id) {
   }
 }
 
+async function postMovie(newMovie) {
+  const oldListMovies = await readData();
+  try {
+    const newMovieWithId = { id: Date.now(), ...newMovie };
+
+    const allMovies = JSON.stringify([...oldListMovies, newMovieWithId]);
+
+    await fs.promises.writeFile(PATH_DATA_MOVIES, allMovies);
+
+    return newMovieWithId;
+  } catch (error) {
+    console.error(`Did not post the movie in the database. Error: ${error}`);
+  }
+}
+
 module.exports = {
   readData,
   getMoviesById,
+  postMovie,
 };

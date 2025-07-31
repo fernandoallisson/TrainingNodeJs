@@ -18,8 +18,6 @@ app.post('/soccer', async (req, res) => {
 
   const newTeamWithId = await postFile(newTeam);
 
-  console.log(postFile);
-
    return res.status(201).json({ newTeamWithId });
 });
 

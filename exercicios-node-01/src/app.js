@@ -17,4 +17,12 @@ app.get('/movies/:id', async (req, res) => {
   return res.status(200).json(movie);
 });
 
+app.post('/movies', async (req, res) => {
+  const newMovie = req.body;
+
+  const movie = await ultils.postMovie(newMovie);
+  
+  return res.status(201).json(movie);
+});
+
 module.exports = app;
