@@ -1,12 +1,14 @@
 /* eslint-disable max-lines-per-function */
 const chai = require('chai');
 const chaiHttp = require('chai-http');
+const sinon = require('sinon');
+const fs = require('fs');
 const app = require('../../src/app');
 
 const { expect } = chai;
 chai.use(chaiHttp);
 
-const mockData = [
+const mockData = JSON.stringify([
   {
     id: 1,
     movie: 'Avatar',
@@ -22,9 +24,11 @@ const mockData = [
     movie: 'Avatar',
     price: 5,
   },
-];
+]);
 
 describe('Testando as funções do Utils', () => {
+  sinon.stub(fs.promises, 'readFile')
+    .resolves(mockData);
   describe('Usando o Método Get em /movies', () => {
     it('Retorna Status 200', async () => {
       const data = await chai
@@ -39,7 +43,7 @@ describe('Testando as funções do Utils', () => {
       const response = (await chai.request(app).post('/movies').send(mockData[0]));
 
       expect(response.status).to.be.equal(201);
-      expect(response.body.movie).to.haveOwnProperty('movie');
+      expect(response.body).to.haveOwnProperty('movie');
       expect(response.body.movie).to.haveOwnProperty('id');
     });
   });
