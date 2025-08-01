@@ -5,9 +5,9 @@ const app = express();
 app.use(express.json());
 
 app.get('/movies', async (req, res) => {
-  const data = await ultils.readData();
+  const movies = await ultils.readData();
 
-  return res.status(200).json(data);
+  return res.status(200).json({ movies });
 });
 
 app.get('/movies/:id', async (req, res) => {
@@ -22,7 +22,7 @@ app.post('/movies', async (req, res) => {
 
   const movie = await ultils.postMovie(newMovie);
   
-  return res.status(201).json(movie);
+  return res.status(201).json({ movie });
 });
 
 app.put('/movies/:id', async (req, res) => {
