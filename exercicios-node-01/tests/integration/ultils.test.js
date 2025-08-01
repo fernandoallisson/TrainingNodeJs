@@ -44,6 +44,7 @@ describe('Testando as funções do Utils', () => {
   });
   describe('Usando o método Post em /movie', () => { 
     it('Deve retornar ao fazer um post as informações do filme criado', async () => {
+      sinon.stub(fs.promises, 'writeFile').resolves();
       const response = (await chai.request(app).post('/movies').send(mockData[0]));
 
       expect(response.status).to.be.equal(201);
