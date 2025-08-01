@@ -1,52 +1,23 @@
 const express = require('express');
-const ultils = require('./utils');
+
+require('express-async-errors');
+
+const routes = require('./routers/index');
 
 const app = express();
 app.use(express.json());
 
-const validateId = (req, res, next) => { 
-  const { id } = req.params;
+// Rotas a serem consumidas.
+app.use(routes);
 
-  if (!Number.isNaN(Number(id))) {
-    next();
-  } else {
-    res.status(400).send({ message: 'O ID deve ser um número' });
-  }
-};
-
-app.get('/movies', async (req, res) => {
-  const movies = await ultils.readData();
-
-  return res.status(200).json({ movies });
+app.use((error, req, res, next) => {
+  console.error(error.stack);
+  next(error);
 });
 
-app.get('/movies/:id', validateId, async (req, res) => {
-  const { id } = req.params;
-  const movie = await ultils.getMoviesById(Number(id));
-
-  return res.status(200).json(movie);
-});
-
-app.post('/movies', async (req, res) => {
-  const newMovie = req.body;
-
-  const movie = await ultils.postMovie(newMovie);
-  
-  return res.status(201).json({ movie });
-});
-
-app.put('/movies/:id', validateId, async (req, res) => {
-  const { id } = req.params;
-  const newMovie = req.body;
-
-  const updatedMovie = await ultils.updateMovie(Number(id), newMovie);
-  return res.status(200).json(updatedMovie);
-});
-
-app.delete('/movies/:id', validateId, async (req, res) => {
-  const { id } = req.params;
-  await ultils.deleMovie(id);
-  res.status(200).json({ message: `Movie with id ${id} was deleted.` });
+app.use((error, req, res, next) => {
+  res.status(500).send({ message: 'Deu Erro!' });
+  next();
 });
 
 module.exports = app;
