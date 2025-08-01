@@ -26,6 +26,10 @@ const mockData = JSON.stringify([
   },
 ]);
 
+  afterEach(() => {
+    sinon.restore();
+  });
+
 describe('Testando as funções do Utils', () => {
   sinon.stub(fs.promises, 'readFile')
     .resolves(mockData);
